@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SpinPlayAssessment</title>
+        <style>
+            /* Reset CSS: Please avoid making changes here unless you know what you're doing :) */
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+    
+            body {
+                line-height: 1;
+                font-family: Arial, sans-serif;
+                background-color: #080063;
+            }
+    
+            ol, ul {
+                list-style: none;
+            }
+    
+            img, video {
+                max-width: 100%;
+                height: auto;
+                display: block;
+            }
+    
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        </style>
+    </head>
+    <!-- <div id="fps" style="position: absolute; top: 10px; left: 10px; color: green;">FPS: 0</div> -->
+    <body>
+        <div id="game-container"></div>
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+        <script type="module" src="./src/main.js"></script>
+    </body>
+    </html>

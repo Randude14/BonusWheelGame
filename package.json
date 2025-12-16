@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "name": "spinplayassessment",
+  "version": "1.0.0",
+  "description": "--Phaser vs Pixi.JS\r I am unfamiliar with both of these tools and the decision was to go with Phaser\r as I can more quickly prototype in a game engine already made and focus on the \r design of the game rather than scrambling through a tool I have never used.",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Randude14@bitbucket.org/spin-play-assessment/spinbonusgame.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/spin-play-assessment/spinbonusgame/issues"
+  },
+  "homepage": "https://bitbucket.org/spin-play-assessment/spinbonusgame#readme"
+}

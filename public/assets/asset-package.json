@@ -1,0 +1,122 @@
+    {
+        "pack1": {
+            "files": [
+                {
+                    "type": "image",
+                    "key": "arcade_cabinet",
+                    "url": "assets/images/arcade_cabinet.png"
+                },
+                {
+                    "type": "image",
+                    "key": "arcade_screen",
+                    "url": "assets/images/screen.png"
+                },
+                {
+                    "type": "image",
+                    "key": "wall",
+                    "url": "assets/images/wall_bg.png"
+                },
+                {
+                    "type": "image",
+                    "key": "coin",
+                    "url": "assets/images/coin.png"
+                },
+                {
+                    "type": "image",
+                    "key": "game-logo",
+                    "url": "assets/images/game-logo.png"
+                },
+                {
+                    "type": "image",
+                    "key": "wheel",
+                    "url": "assets/images/wheel.png"
+                },
+                {
+                    "type": "image",
+                    "key": "wheel-pick",
+                    "url": "assets/images/wheel-pick.png"
+                },
+                {
+                    "type": "image",
+                    "key": "screen-overlay",
+                    "url": "assets/images/screen-overlay.png"
+                },
+                {
+                    "type": "image",
+                    "key": "balance-bg",
+                    "url": "assets/images/balance_bg.png"
+                },
+                {
+                    "type": "image",
+                    "key": "demo-screen-button",
+                    "url": "assets/images/demo-screen-button.png"
+                },
+                {
+                    "type": "spritesheet",
+                    "key": "spin-button",
+                    "url": "assets/images/spin-wheel-button.png",
+                    "frameConfig": { "frameWidth": 420, "frameHeight": 74 }
+                },
+                {
+                    "type": "spritesheet",
+                    "key": "demo-button",
+                    "url": "assets/images/demo-button.png",
+                    "frameConfig": { "frameWidth": 264, "frameHeight": 74 }
+                },
+                {
+                    "type": "spritesheet",
+                    "key": "diamonds",
+                    "url": "assets/images/diamonds.png",
+                    "frameConfig": { "frameWidth": 85, "frameHeight": 92 }
+                }
+            ]
+        },
+        "pack2": {
+            "files": [
+                {
+                    "type": "audio",
+                    "key": "wheel-land",
+                    "url": "assets/sounds/wheel-landing.mp3"
+                },
+                {
+                    "type": "audio",
+                    "key": "wheel-click",
+                    "url": "assets/sounds/tick.mp3"
+                },
+                {
+                    "type": "audio",
+                    "key": "button-click",
+                    "url": "assets/sounds/button-click.mp3"
+                },
+                {
+                    "type": "audio",
+                    "key": "coin-drop",
+                    "url": "assets/sounds/drop-coin.mp3"
+                },
+                {
+                    "type": "audio",
+                    "key": "win-celebration",
+                    "url": "assets/sounds/win-celebration.mp3"
+                },
+                {
+                    "type": "audio",
+                    "key": "bangup-stop",
+                    "url": "assets/sounds/bangup-stop.mp3"
+                },
+                {
+                    "type": "audio",
+                    "key": "game-loop",
+                    "url": "assets/sounds/jazzmusic-game-loop.mp3"
+                }
+            ]
+        },
+        "pack3": {
+            "files": [
+                {
+                    "type": "font",
+                    "key": "Gill Sans",
+                    "url": "assets/fonts/gillsans.otf"
+                }
+            ]
+        }
+    }
