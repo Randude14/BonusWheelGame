@@ -18,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://Randude14@bitbucket.org/spin-play-assessment/spinbonusgame.git"
+    "url": "git+https://github.com/Randude14/BonusWheelGame.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://bitbucket.org/spin-play-assessment/spinbonusgame/issues"
+    "url": "https://github.com/Randude14/BonusWheelGame/issues"
   },
-  "homepage": "https://bitbucket.org/spin-play-assessment/spinbonusgame#readme"
+  "homepage": "https://github.com/Randude14/BonusWheelGame#readme"
 }
