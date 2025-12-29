@@ -2,7 +2,6 @@ import Phaser from "phaser"
 import Wheel from "../logic/Wheel"
 import UIButton, { ButtonState } from "../logic/UIButton"
 import StateMachine from "../logic/StateMachine"
-import { States } from "../info/States"
 import WheelGameScreen from "../logic/WheelGameScreen"
 import CoinSlot from "../logic/CoinSlot"
 
@@ -57,6 +56,7 @@ export default class WheelGame extends Phaser.Scene {
     public preload(): void {
         this.load.pack('wheel-game-pack', '/assets/asset-package.json')
         this.load.json('wheel-slices', '/assets/data/wheel-slices.json')
+        this.load.json('states', '/assets/data/states.json')
     }
 
     public create() {
@@ -77,11 +77,8 @@ export default class WheelGame extends Phaser.Scene {
             })
         }
 
-        // Load states from enum
-        let states = Object.values(States)
-
         // This controls the logic flow of the game
-        this.stateMachine = new StateMachine(states)
+        this.stateMachine = new StateMachine(this, "states")
         this.stateMachine.AddListener(this.stateChangedHandler.bind(this))
 
         this.createUIButtons()
@@ -254,7 +251,7 @@ export default class WheelGame extends Phaser.Scene {
 
     private stateChangedHandler(state: string): void
     {
-        if(state === States.WheelDown)
+        if(state === "WheelDown")
         {
             this.gameScreen.HideDemoScreen()
             this.demoButton.ButtonState = ButtonState.Disabled
@@ -287,18 +284,18 @@ export default class WheelGame extends Phaser.Scene {
 
             this.wheelUp = false
         }
-        else if(state === States.WheelLanded)
+        else if(state === "WheelLanded")
         {
             this.stateMachine.NextState()
         }
-        else if(state === States.BonusInput)
+        else if(state === "BonusInput")
         {
             if(this.wheelSlicePicked >= 0)
             {
                 this.spinButtonDown(true)
             }
         }
-        else if(state === States.Award)
+        else if(state === "Award")
         {
             this.bangupIsDone = false
             this.gameScreen.BangupTo(this.wheel.SliceWin)
@@ -379,7 +376,7 @@ export default class WheelGame extends Phaser.Scene {
 
     private demoScreenButtonDown(index: number): void
     {
-        if(this.stateMachine.CurrentState === States.WaitForPlay)
+        if(this.stateMachine.CurrentState === "WaitForPlay")
         {
             this.wheelSlicePicked = index
             this.wagerButtonDown(true)
@@ -390,7 +387,7 @@ export default class WheelGame extends Phaser.Scene {
     {
         console.log("Spin button clicked.")
 
-        if(this.stateMachine.CurrentState === States.BonusInput && ! this.wheel.IsLanding)
+        if(this.stateMachine.CurrentState === "BonusInput" && ! this.wheel.IsLanding)
         {
             this.wheel.LandOnSlice(this.wheelSlicePicked)
             this.stateMachine.NextState()
@@ -415,7 +412,7 @@ export default class WheelGame extends Phaser.Scene {
     {
         console.log("Wager button clicked.")
 
-        if(this.stateMachine.CurrentState === States.WaitForPlay)
+        if(this.stateMachine.CurrentState === "WaitForPlay")
         {
             if(! force)
             {
@@ -433,7 +430,7 @@ export default class WheelGame extends Phaser.Scene {
                 }
             })
         }
-        if(this.stateMachine.CurrentState === States.Award)
+        if(this.stateMachine.CurrentState === "Award")
         {
             this.gameScreen.CompleteBangup()
             if(this.bangupStop)

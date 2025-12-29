@@ -1,44 +1,71 @@
+import { State } from "../info/States";
+import WheelGame from "../scenes/WheelGame";
 
  type StringFunction = (input: string) => void
 
 export default class StateMachine
 {
-    private states: string[] = [];
+    private states: State[] = null;
     private _currentState: string = "";
     public get CurrentState(): string { return this._currentState }
+    private stateIndex: number = -1
 
     private stateListeners: StringFunction[] = [];
-    private stateIndex = -1;
 
-    constructor(_states: string[])
+    constructor(_wheelGame: WheelGame,  _statesFile: string)
     {
-        this.states.push(..._states);
-
-        if(this.states.length > 0)
+        let data = _wheelGame.cache.json.get(_statesFile) as any
+        let firstState: string = null;
+        if(data && data.states)
         {
-            this.stateIndex = 0
-            this._currentState = this.states[this.stateIndex]
+            this.states = data.states as State[]
+            firstState = data.firstState as string
+        }
+
+        if(!this.states)
+        {
+            console.error("Failed to parse states from states file.")
+            return;
+        }    
+
+        if(firstState)
+        {
+            let index = this.states.findIndex(s => s.name === firstState)
+            if(index >= 0)
+            {
+                this.stateIndex = index
+            }
+            else
+            {
+                console.error(`First state ${firstState} not found in states list.`)
+            }
+            this._currentState = firstState
         }
         else
         {
-            console.error("No states were present in passed array.")
+            console.error(`No states were present in passed file ${_statesFile}`)
         }
     }
 
     public NextState(): void
     {
-        this.stateIndex++
-
-        if(this.stateIndex >= this.states.length)
+        if(this.stateIndex >= 0 && this.states[this.stateIndex])
         {
-            this.stateIndex = 0
-        }
+            let nextStateName = this.states[this.stateIndex].nextState;
+            let state = this.states.find((s, index) => {    
+                if(s.name === nextStateName)
+                {
+                    this.stateIndex = index
+                    return s
+                }
+            });
 
-        if(this.states[this.stateIndex])
-        {
-            this._currentState = this.states[this.stateIndex];
-            console.log(`Current State: ${this._currentState}`)
-            this.stateListeners.forEach(listener => listener(this._currentState))
+            if(state)
+            {
+                this._currentState = this.states[this.stateIndex].name
+                console.log(`Current State: ${this._currentState}`)
+                this.stateListeners.forEach(listener => listener(this._currentState))
+            }
         }
     }
 

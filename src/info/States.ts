@@ -1,10 +1,6 @@
 
-export enum States
+export interface State
 {
-    WaitForPlay = "WaitForPlay",
-    WheelDown = "WheelDown",
-    BonusInput = "BonusInput",
-    WheelSpin = "WheelSpin",
-    WheelLanded = "WheelLanded",
-    Award = "Award"
+    name: string,
+    nextState: string
 }

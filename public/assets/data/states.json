@@ -1,0 +1,31 @@
+{
+    "firstState": "WaitForPlay",
+    "states": [
+        {
+            "name": "WaitForPlay",
+            "nextState": "WheelDown"
+        },
+        {
+            "name": "WheelDown",
+            "nextState": "BonusInput"
+        },  
+        {
+            "name": "BonusInput",
+            "nextState": "WheelSpin"
+        },
+        {
+            "name": "WheelSpin",
+            "nextState": "WheelLanded"
+        },
+        {
+            "name": "WheelLanded",
+            "nextState": "Award"
+        },
+        {
+            "name": "Award",
+            "nextState": "WaitForPlay"
+        }
+
+    ]
+
+}
