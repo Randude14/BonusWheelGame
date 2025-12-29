@@ -28,7 +28,6 @@ export default class WheelGame extends Phaser.Scene {
     private demoButton: UIButton = null
     private spinButton: UIButton = null
     private screenMask: Mask = null
-    private wheel: Wheel = null
     private background: Container = null
     private centerX: number = 0
 
@@ -40,6 +39,9 @@ export default class WheelGame extends Phaser.Scene {
     private bangupIsDone: boolean = true
     private wheelSlicePicked: number = -1
     private wheelUp: boolean = false
+
+    private wheel: Wheel = null
+    public get Wheel(): Wheel { return this.wheel }
 
     private readonly wheelCenterPos: number = 300
     private readonly wheelTopPos: number = 115
@@ -54,6 +56,7 @@ export default class WheelGame extends Phaser.Scene {
 
     public preload(): void {
         this.load.pack('wheel-game-pack', '/assets/asset-package.json')
+        this.load.json('wheel-slices', '/assets/data/wheel-slices.json')
     }
 
     public create() {
@@ -105,6 +108,17 @@ export default class WheelGame extends Phaser.Scene {
         graphics.fillRect(arcadeScreen.x, arcadeScreen.y, arcadeScreen.displayWidth, arcadeScreen.displayHeight)
         this.screenMask = graphics.createGeometryMask()
 
+        this.wheel = new Wheel(this, {
+            wheelImage: "wheel",
+            wheelPickImage: "wheel-pick",
+            wheelIdleSpeed: 10,
+            wheelSpinSpeed: 540,
+            wheelClickSound: "wheel-click",
+            mask: this.screenMask,
+            wheelSliceJson: "wheel-slices"
+        }).setScale(0.3).setDepth(WheelGame.WHEEL_DEPTH).addToUpdateList()
+        this.wheel.y = this.wheelTopPos
+
         this.gameScreen = new WheelGameScreen(this, this.screenMask, {
             overlayImage: "screen-overlay",
             logoImage: "game-logo",
@@ -137,16 +151,6 @@ export default class WheelGame extends Phaser.Scene {
         this.add.existing(this.gameScreen)
 
         arcadeCabinet.setDepth(WheelGame.CABINET_DEPTH)
-
-        this.wheel = new Wheel(this, {
-            wheelImage: "wheel",
-            wheelPickImage: "wheel-pick",
-            wheelIdleSpeed: 10,
-            wheelSpinSpeed: 540,
-            wheelClickSound: "wheel-click",
-            mask: this.screenMask,
-        }).setScale(0.3).setDepth(WheelGame.WHEEL_DEPTH).addToUpdateList()
-        this.wheel.y = this.wheelTopPos
         
         // Create audio objects
         this.wheelLand = this.sound.add('wheel-land')

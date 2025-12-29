@@ -1,4 +1,3 @@
-import WheelSliceInfo from "../info/WheelSliceInfo"
 import WheelGame from "../scenes/WheelGame"
 
 type Mask = Phaser.Display.Masks.GeometryMask
@@ -51,6 +50,13 @@ export default class WheelGameScreen extends Phaser.GameObjects.Container
 
         this.wheelGame = wheelGame
 
+        let wheel = this.wheelGame.Wheel
+
+        if(!wheel)
+        {
+            console.error("WheelGameScreen: Wheel instance is required to create the demo button screen.")
+        }
+
         let canvasWidth = this.wheelGame.sys.game.canvas.width
         let canvasHeight = this.wheelGame.sys.game.canvas.height
 
@@ -80,13 +86,13 @@ export default class WheelGameScreen extends Phaser.GameObjects.Container
 
         this.demoButtons = this.wheelGame.add.container(settings.maskBounds.x, settings.maskBounds.y)
 
-        for(let i = 0; i < WheelSliceInfo.WheelSlices.length; ++i)
+        for(let i = 0; i < wheel.TotalSlices; ++i)
         {
             let x = maskThirdW * ( (i % 2 == 0) ? 0.8 : 2.2 )
             let y = maskThirdH * ( Math.floor(i / 2) + 1 ) - maskThirdH / 2
 
             let demoButton = this.wheelGame.add.image(x, y, settings.demoScreenButtonImg).setScale(0.5).setOrigin(0.5)
-            let demoText = this.wheelGame.add.text(x, y, `Slice ${i+1}\n` + String(WheelSliceInfo.WheelSlices[i].credit), settings.textDemoButtonSettings).setOrigin(0.5)
+            let demoText = this.wheelGame.add.text(x, y, `Slice ${i+1}\n` + String(wheel.WheelCredit(i)), settings.textDemoButtonSettings).setOrigin(0.5)
 
             this.demoButtons.add(demoButton)
             this.demoButtons.add(demoText)

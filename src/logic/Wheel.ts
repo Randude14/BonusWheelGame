@@ -1,6 +1,6 @@
 import Phaser from "phaser"
 import WheelGame from "../scenes/WheelGame"
-import WheelSliceInfo from "../info/WheelSliceInfo"
+import { WheelCredit } from "../info/WheelCredit"
 
 type Mask = Phaser.Display.Masks.GeometryMask
 type Image = Phaser.GameObjects.Image
@@ -16,12 +16,12 @@ export interface WheelSettings
     wheelIdleSpeed: number,
     wheelSpinSpeed: number,
     wheelClickSound: string,
+    wheelSliceJson: string,
     mask: Mask,
 }
 
 export default class Wheel extends Phaser.GameObjects.Container
 {
-
     private spinTween: Phaser.Tweens.Tween = null
     private idleTween: Phaser.Tweens.Tween = null
     private idleTweenConfig: TweenBuilderConfig = null
@@ -39,6 +39,10 @@ export default class Wheel extends Phaser.GameObjects.Container
     private sliceLanded: number = -1
     public get IsLanding(): boolean {return this.sliceLanded >= 0}
 
+    private wheelData: WheelCredit[] = null
+    public WheelCredit(i: number): number { return this.wheelData ? this.wheelData[i].credit : null }
+    public get TotalSlices(): number { return this.wheelData ? this.wheelData.length : 0 }
+
     private wheelRadius: number = 240
     private centerX: number = 0
     private centerY: number = 0
@@ -53,10 +57,23 @@ export default class Wheel extends Phaser.GameObjects.Container
 
         this.wheelContainer.add( this.wheelGame.add.image(0, 0, settings.wheelImage).setScale(2) )
 
-
-        for(let i = 0; i < WheelSliceInfo.WheelSlices.length; ++i)
+        let data = this.wheelGame.cache.json.get(settings.wheelSliceJson) as any
+        
+        if(data)
         {
-            let angleDeg = (360 / WheelSliceInfo.WheelSlices.length) * i
+            this.wheelData = data.wheelSlices as WheelCredit[]
+        }
+
+        if(!this.wheelData || this.wheelData.length === 0)
+        {
+            console.error(`Failed to load wheel slice data from JSON: ${settings.wheelSliceJson}`)
+            this.removeAll(true)
+            return
+        }
+
+        for(let i = 0; i < this.wheelData.length; ++i)
+        {
+            let angleDeg = (360 / this.wheelData.length) * i
             let angleRad = Phaser.Math.DegToRad(angleDeg)
             let x = Math.cos(angleRad) * this.wheelRadius
             let y = Math.sin(angleRad) * this.wheelRadius
@@ -64,7 +81,7 @@ export default class Wheel extends Phaser.GameObjects.Container
             let sliceContainer = this.wheelGame.add.container(x, y).setAngle(90 + angleDeg)
 
             //let slice = this.wheelGame.add.image(0, 0, settings.wheelSliceImage).setOrigin(0.5).setTint( WheelSliceInfo.WheelSlices[i].color )
-            let creditText = this.wheelGame.add.text(50, -180, String(WheelSliceInfo.WheelSlices[i].credit), {
+            let creditText = this.wheelGame.add.text(50, -180, String(this.wheelData[i].credit), {
                                             fontFamily: 'Arial',
                                             fontSize: 100,
                                             fontStyle: 'bold',
@@ -110,7 +127,7 @@ export default class Wheel extends Phaser.GameObjects.Container
         this.idleTween = this.wheelGame.tweens.add(this.idleTweenConfig)
     }
 
-    public get SliceWin(): number { return WheelSliceInfo.WheelSlices[this.sliceLanded].credit}
+    public get SliceWin(): number { return this.wheelData[this.sliceLanded].credit}
 
     public LandOnSlice(slice: number = -1): void
     {
@@ -123,20 +140,20 @@ export default class Wheel extends Phaser.GameObjects.Container
             return
         }
 
-        if(slice < 0 || slice >= WheelSliceInfo.WheelSlices.length)
+        if(slice < 0 || slice >= this.wheelData.length)
         {
             // Use weighted table to determine slice to land on
             let totalWeight = 0
 
             // Total up weights
-            WheelSliceInfo.WheelSlices.forEach(s => totalWeight += s.weight)
+            this.wheelData.forEach(s => totalWeight += s.weight)
 
             // pick a random weight
             let randWeight = Math.random() * totalWeight
 
-            for(let x = 0; x < WheelSliceInfo.WheelSlices.length; ++x)
+            for(let x = 0; x < this.wheelData.length; ++x)
             {
-                randWeight -= WheelSliceInfo.WheelSlices[x].weight
+                randWeight -= this.wheelData[x].weight
 
                 // Broke past 0, set this.sliceLanded
                 if(randWeight <= 0)
@@ -155,7 +172,7 @@ export default class Wheel extends Phaser.GameObjects.Container
 
         this.sliceLanded = slice
 
-        let sliceLength = (360 / WheelSliceInfo.WheelSlices.length)
+        let sliceLength = (360 / this.wheelData.length)
         let angleToLand = slice * sliceLength - ( (slice+1) % 2 ) * 90 // Calculate where the wheel needs to land
 
         let rotations = 5        // Total amount of times wheel will spin
@@ -215,7 +232,12 @@ export default class Wheel extends Phaser.GameObjects.Container
 
     public update(): void
     {
-        let sliceLength = (360 / WheelSliceInfo.WheelSlices.length)
+        if(this.wheelData === null)
+        {
+            return;
+        }
+
+        let sliceLength = (360 / this.wheelData.length)
 
         if(this.wheelClick && this.sliceLanded >= 0)
         {
